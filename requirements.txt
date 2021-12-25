@@ -139,6 +139,9 @@ click==8.0.3; python_version >= "3.6" \
 colorama==0.4.4; python_version >= "3.6" and python_full_version < "3.0.0" and platform_system == "Windows" or platform_system == "Windows" and python_version >= "3.6" and python_full_version >= "3.5.0" \
     --hash=sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2 \
     --hash=sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b
+essentials-configuration==0.0.2 \
+    --hash=sha256:5e2c81ea521d2c0bd41a956fd95c8041c2bc68d71a0d96784833adf317111170 \
+    --hash=sha256:6e62a4822c5eecdfebb1e6e8fd6791cba9e66b50dc85b2fa6ff752f9ae021d62
 essentials-openapi==0.1.6 \
     --hash=sha256:8e3f9665824bf1c18e2430b641ee304dd36736066abde3f5651f587ad905a620 \
     --hash=sha256:0bf4470c710e2b2e452ddf80c968b2ad67f0ffcb3d5de2434d44809cbe4611f7
@@ -464,9 +467,6 @@ pyyaml==5.4.1; python_version >= "2.7" and python_full_version < "3.0.0" or pyth
     --hash=sha256:49d4cdd9065b9b6e206d0595fee27a96b5dd22618e7520c33204a4a3239d5b10 \
     --hash=sha256:c20cfa2d49991c8b4147af39859b167664f2ad4561704ee74c1de03318e898db \
     --hash=sha256:607774cbba28732bfa802b54baa7484215f530991055bb562efbed5b2f20a45e
-roconfiguration==1.0.9 \
-    --hash=sha256:8831f983437def35ecf0ee8c865c5822e7c980687043c6fc4ade896611539df4 \
-    --hash=sha256:14c12a4ef90710d6b19bd13d79dab6f32516479380246469548f3eb297970136
 rodi==1.1.1 \
     --hash=sha256:a9f6770cd68e5ffb15d2788e2923142cda004274e33593af64048581f4162fad \
     --hash=sha256:8d73539614c0335120ed42b9a92aae522dca937071e75c8ba207fa2b85ebb5c3
