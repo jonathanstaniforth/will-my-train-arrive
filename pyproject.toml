@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "will-my-train-arrive"
+version = "0.1.0"
+description = "A web app that shows the performance of train services based on historical records."
+authors = ["Jonathan Staniforth <jonathanstaniforth@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+hypercorn = "^0.12.0"
+blacksheep = "^1.2.2"
+aiohttp = "^3.8.1"
+uvicorn = "^0.16.0"
+pydantic = "^1.8.2"
+Jinja2 = "^3.0.3"
+essentials-configuration = "^0.0.2"
+
+[tool.poetry.dev-dependencies]
+pudb = "^2021.2.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
