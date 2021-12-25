@@ -35,12 +35,18 @@ let app = new Vue({
         const start_station_element = document.getElementById("startStation");
         const end_station_element = document.getElementById("endStation");
 
-        for (const station of crs_codes) {
-            let start_option_element = document.createElement("option", {value: station.station_name});
-            start_option_element.setAttribute("value", station.station_name);
+        for (const station of STATIONS) {
+            let start_option_element = document.createElement("option");
+            start_option_element.setAttribute("value", station.crs_code);
 
-            let end_option_element = document.createElement("option", {value: station.station_name});
-            end_option_element.setAttribute("value", station.station_name);
+            let start_text_node = document.createTextNode(station.name);
+            start_option_element.appendChild(start_text_node);
+
+            let end_option_element = document.createElement("option");
+            end_option_element.setAttribute("value", station.crs_code);
+
+            let end_text_node = document.createTextNode(station.name);
+            end_option_element.appendChild(end_text_node);
 
             start_station_element.appendChild(start_option_element);
             end_station_element.appendChild(end_option_element);
@@ -53,13 +59,11 @@ let app = new Vue({
         onSubmit: function (event) {
             let form = document.forms.trainService;
 
-            let start_station_crs = convert_station_name_to_crs(form.elements.startStation.value);
-            let end_station_crs = convert_station_name_to_crs(form.elements.endStation.value);
             let from_time = moment(form.elements.departureTime.value, "hh:mm").format("YYYY-MM-DD HH:mm:ss");
 
             let request_data = {
-                "departure_station": start_station_crs,
-                "arrival_station": end_station_crs,
+                "departure_station": form.elements.startStation.value,
+                "arrival_station": form.elements.endStation.value,
                 "from_time": from_time
             };
 
@@ -90,13 +94,3 @@ let app = new Vue({
         }
     }
 });
-
-function convert_station_name_to_crs(station_name) {
-    for (const station of crs_codes) {
-        if (station.station_name == station_name) {
-            return station.crs_code;
-        }
-    }
-
-    console.log("ERROR - Unknown station " + station_name);
-}
