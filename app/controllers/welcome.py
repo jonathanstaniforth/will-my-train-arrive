@@ -7,9 +7,10 @@ from app.configuration import config
 
 @dataclass
 class IndexModel:
+    development: str
     url: str
 
 class Welcome(Controller):
     @get("/")
     def index(self):
-        return self.view(model=IndexModel(config.url))
+        return self.view(model=IndexModel(str(config.show_error_details), config.url))

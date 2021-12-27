@@ -1,7 +1,38 @@
+function sendRequest(endpoint, data, callback) {
+    let request = new XMLHttpRequest();
+    request.open("POST", APP_BASE_URL + endpoint);
+    request.setRequestHeader("Accept", "application/json")
+    request.setRequestHeader("Content-Type", "application/json");
+
+    if (!APP_DEVELOPMENT) {
+        request.send(JSON.stringify(data));
+    }
+
+    request.onload = function() {
+        if (request.status != 200) {
+            console.log("ERROR - response status is " + request.status);
+            return;
+        }
+
+        callback(JSON.parse(request.response));
+    };
+
+    request.onreadystatechange = function () {
+        if (request.readyState === XMLHttpRequest.HEADERS_RECEIVED || request.readyState === XMLHttpRequest.LOADING) {
+            app.loading = true;
+        } else {
+            app.loading = false;
+        }
+    };
+}
+
+function updateServices(services) {
+    app.services = services;
+}
+
 let app = new Vue({
     el: '#app',
     data: {
-        selected: "",
         departure_times: [
             "00:00",
             "01:00",
@@ -28,69 +59,27 @@ let app = new Vue({
             "22:00",
             "23:00"
         ],
+        form: {
+            start_station: "",
+            end_station: "",
+            departure_time: ""
+        },
+        sending_request: false,
         services: [],
-        loading: false,
-    },
-    mounted: function () {
-        const start_station_element = document.getElementById("startStation");
-        const end_station_element = document.getElementById("endStation");
-
-        for (const station of STATIONS) {
-            let start_option_element = document.createElement("option");
-            start_option_element.setAttribute("value", station.crs_code);
-
-            let start_text_node = document.createTextNode(station.name);
-            start_option_element.appendChild(start_text_node);
-
-            let end_option_element = document.createElement("option");
-            end_option_element.setAttribute("value", station.crs_code);
-
-            let end_text_node = document.createTextNode(station.name);
-            end_option_element.appendChild(end_text_node);
-
-            start_station_element.appendChild(start_option_element);
-            end_station_element.appendChild(end_option_element);
-        }
+        stations: STATIONS,
     },
     methods: {
         renderTime: function (time) {
             return moment(time, "HHmm").format("DD/MM/YYYY HH:mm");
         },
-        onSubmit: function (event) {
-            let form = document.forms.trainService;
-
-            let from_time = moment(form.elements.departureTime.value, "hh:mm").format("YYYY-MM-DD HH:mm:ss");
-
-            let request_data = {
-                "departure_station": form.elements.startStation.value,
-                "arrival_station": form.elements.endStation.value,
-                "from_time": from_time
+        onSubmit: function () {
+            const REQUEST_DATA = {
+                "departure_station": app.form.start_station,
+                "arrival_station": app.form.end_station,
+                "from_time": moment(app.form.departure_time, "hh:mm").format("YYYY-MM-DD HH:mm:ss")
             };
 
-            let request = new XMLHttpRequest();
-            request.open("POST", "{{ url }}/api/v1/performance");
-            request.setRequestHeader('Content-Type', 'application/json');
-
-            app.loading = true;
-
-            request.send(JSON.stringify(request_data));
-
-            request.onload = function() {
-                if (request.status != 200) {
-                    console.log("ERROR - response status is " + request.status);
-                    return;
-                }
-
-                app.services = JSON.parse(request.response);
-            };
-
-            request.onreadystatechange = function () {
-                if (request.readyState === XMLHttpRequest.DONE) {
-                    app.loading = false;
-                } else if (request.readyState === XMLHttpRequest.HEADERS_RECEIVED || request.readyState === XMLHttpRequest.LOADING) {
-                    app.loading = true;
-                }
-            }
+            sendRequest("/api/v1/performance", REQUEST_DATA, updateServices);
         }
     }
 });
