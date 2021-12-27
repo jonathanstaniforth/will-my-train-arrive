@@ -9,6 +9,8 @@ function sendRequest(endpoint, data, callback) {
     }
 
     request.onload = function() {
+        app.requests.count++;
+
         if (request.status != 200) {
             console.log("ERROR - response status is " + request.status);
             return;
@@ -19,9 +21,9 @@ function sendRequest(endpoint, data, callback) {
 
     request.onreadystatechange = function () {
         if (request.readyState === XMLHttpRequest.HEADERS_RECEIVED || request.readyState === XMLHttpRequest.LOADING) {
-            app.loading = true;
+            app.requests.sending = true;
         } else {
-            app.loading = false;
+            app.requests.sending = false;
         }
     };
 }
@@ -64,7 +66,10 @@ let app = new Vue({
             end_station: "",
             departure_time: ""
         },
-        sending_request: false,
+        requests: {
+            count: 0,
+            sending: false
+        },
         services: [],
         stations: STATIONS,
     },
