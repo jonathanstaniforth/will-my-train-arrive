@@ -36,15 +36,10 @@ class Performance(ApiController):
             to_time=(request.from_time + timedelta(hours=1)).time(),
             from_date=request.from_time.date(),
             to_date=request.from_time.date(),
-            days=days[request.from_time.date().isoweekday()]
+            days=days[request.from_time.date().isoweekday()],
+            tolerance=[request.arrival_allowance]
         )
 
         service_metrics = await get_service_metrics(http_client, service_metric_request)
 
-        services_performance = [{
-            "arrival_time": service["serviceAttributesMetrics"]["gbtt_pta"],
-            "departure_time": service["serviceAttributesMetrics"]["gbtt_ptd"],
-            "on_time_percentage": service["Metrics"][0]["percent_tolerance"]
-        } for service in service_metrics]
-
-        return services_performance
+        return service_metrics

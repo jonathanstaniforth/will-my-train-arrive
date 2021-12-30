@@ -16,6 +16,7 @@ class ServiceMetricRequest(BaseModel):
     from_date: date
     to_date: date
     days: str
+    tolerance: list[int]
 
     class Config:
         json_encoders = {

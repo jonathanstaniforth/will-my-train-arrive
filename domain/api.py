@@ -6,6 +6,8 @@ from pydantic import BaseModel
 
 class PerformanceRequest(BaseModel):
     """A request for the performance of a service."""
+    arrival_allowance: int
+    """The number of minutes a service must arrive within from the set arrival time."""
     departure_station: str
     """The starting station of the service."""
     arrival_station: str

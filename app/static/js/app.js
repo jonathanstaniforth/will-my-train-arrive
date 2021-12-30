@@ -20,7 +20,7 @@ function sendRequest(endpoint, data, callback) {
     };
 
     request.onreadystatechange = function () {
-        if (request.readyState === XMLHttpRequest.HEADERS_RECEIVED || request.readyState === XMLHttpRequest.LOADING) {
+        if (request.readyState === XMLHttpRequest.OPENED || request.readyState === XMLHttpRequest.HEADERS_RECEIVED || request.readyState === XMLHttpRequest.LOADING) {
             app.requests.sending = true;
         } else {
             app.requests.sending = false;
@@ -62,6 +62,7 @@ let app = new Vue({
             "23:00"
         ],
         form: {
+            arrival_allowance: 0,
             start_station: "",
             end_station: "",
             departure_time: ""
@@ -81,7 +82,8 @@ let app = new Vue({
             const REQUEST_DATA = {
                 "departure_station": app.form.start_station,
                 "arrival_station": app.form.end_station,
-                "from_time": moment(app.form.departure_time, "hh:mm").format("YYYY-MM-DD HH:mm:ss")
+                "from_time": moment(app.form.departure_time, "hh:mm").format("YYYY-MM-DD HH:mm:ss"),
+                "arrival_allowance": app.form.arrival_allowance
             };
 
             sendRequest("/api/v1/performance", REQUEST_DATA, updateServices);
