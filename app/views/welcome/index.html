@@ -72,6 +72,7 @@
                     <div class="row justify-content-md-center">
                         <div class="col col-md-6">
                             <div class="alert alert-info" role="alert" v-if="requests.count > 0 && services.length == 0">No train services found for {{ form.departure_time }}</div>
+                            <div class="alert alert-danger" role="alert" v-if="error.show">{{ error.message }}</div>
                         </div>
                     </div>
 
@@ -144,7 +145,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script type="text/javascript">
             const APP_BASE_URL = "{{ url }}";
-            const APP_DEVELOPMENT = "{{ development }}" === "False";
+            const APP_DEVELOPMENT = "{{ development }}";
         </script>
         <script type="text/javascript" src="js/stations.js"></script>
         <script type="text/javascript" src="js/app.js"></script>

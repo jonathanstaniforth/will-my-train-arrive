@@ -1,4 +1,6 @@
 function sendRequest(endpoint, data, callback) {
+    resetError();
+
     let request = new XMLHttpRequest();
     request.open("POST", APP_BASE_URL + endpoint);
     request.setRequestHeader("Accept", "application/json")
@@ -12,7 +14,7 @@ function sendRequest(endpoint, data, callback) {
         app.requests.count++;
 
         if (request.status != 200) {
-            console.log("ERROR - response status is " + request.status);
+            showError("Received a " + request.status + " response.");
             return;
         }
 
@@ -26,10 +28,28 @@ function sendRequest(endpoint, data, callback) {
             app.requests.sending = false;
         }
     };
+
+    request.onerror = function () {
+        showError("An error occurred, please try again.");
+    };
 }
 
 function updateServices(services) {
     app.services = services;
+}
+
+function setError(message, show=true) {
+    app.error.message = message;
+    app.error.show = show;
+}
+
+function showError(message) {
+    console.error(message);
+    setError(message);
+}
+
+function resetError () {
+    setError("", false);
 }
 
 let app = new Vue({
@@ -61,6 +81,10 @@ let app = new Vue({
             "22:00",
             "23:00"
         ],
+        error: {
+            show: false,
+            message: ""
+        },
         form: {
             arrival_allowance: 0,
             start_station: "",
