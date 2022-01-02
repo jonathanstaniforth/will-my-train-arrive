@@ -35,7 +35,7 @@ function sendRequest(endpoint, data, callback) {
 }
 
 function updateServices(services) {
-    app.services = services;
+    app.data.services = services;
 }
 
 function setError(message, show=true) {
@@ -95,22 +95,29 @@ let app = new Vue({
             count: 0,
             sending: false
         },
-        services: [],
+        data: {
+            services: [],
+            meta: {}
+        },
         stations: STATIONS,
     },
     methods: {
         renderTime: function (time) {
-            return moment(time, "HHmm").format("DD/MM/YYYY HH:mm");
+            return moment(time, "HHmm").format("HH:mm");
         },
         onSubmit: function () {
-            const REQUEST_DATA = {
+            app.data.meta = {
+                "departure_station": app.form.start_station,
+                "arrival_station": app.form.end_station,
+                "from_time": moment(app.form.departure_time, "hh:mm"),
+            };
+
+            sendRequest("/api/v1/performance", {
                 "departure_station": app.form.start_station,
                 "arrival_station": app.form.end_station,
                 "from_time": moment(app.form.departure_time, "hh:mm").format("YYYY-MM-DD HH:mm:ss"),
                 "arrival_allowance": app.form.arrival_allowance
-            };
-
-            sendRequest("/api/v1/performance", REQUEST_DATA, updateServices);
+            }, updateServices);
         }
     }
 });

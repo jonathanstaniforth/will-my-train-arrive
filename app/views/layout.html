@@ -11,13 +11,11 @@
     </head>
     <body>
         <div id="app" class="container">
-            <div class="row justify-content-md-center">
-                <div class="col col-md-6">
-                    {% include "partial/header.html" %}
-                    {% include "partial/nav.html" %}
+            {% include "partial/header.html" %}
+            {% include "partial/nav.html" %}
 
-                    {%- block body -%}{%- endblock -%}
-                </div>
+            <div class="content">
+                {%- block body -%}{%- endblock -%}
             </div>
 
             {% include "partial/footer.html" %}
