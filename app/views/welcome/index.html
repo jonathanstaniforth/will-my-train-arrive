@@ -5,27 +5,38 @@
         <div class="row">
             <div class="col-md-6">
                 <form name="trainService" v-on:submit.prevent="onSubmit">
-                    <div class="mb-3">
-                        <label for="startStation" class="form-label">Start station</label>
-                        <input v-model="form.start_station" class="form-control" list="startStation" name="startStation" aria-describedby="Start station">
-                        <datalist id="startStation">
-                            <option v-for="station in stations" v-bind:value="station.crs_code">{{ station.name }}</option>
-                        </datalist>
-                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="startStation" class="form-label">Start station</label>
+                            <input v-model="form.start_station" class="form-control" list="startStation" name="startStation" aria-describedby="Start station">
+                            <datalist id="startStation">
+                                <option v-for="station in stations" v-bind:value="station.crs_code">{{ station.name }}</option>
+                            </datalist>
+                        </div>
         
-                    <div class="mb-3">
-                        <label for="endStation" class="form-label">End station</label>
-                        <input v-model="form.end_station" class="form-control" list="endStation" name="endStation" aria-describedby="End station">
-                        <datalist id="endStation">
-                            <option v-for="station in stations" v-bind:value="station.crs_code">{{ station.name }}</option>
-                        </datalist>
+                        <div class="col">
+                            <label for="endStation" class="form-label">End station</label>
+                            <input v-model="form.end_station" class="form-control" list="endStation" name="endStation" aria-describedby="End station">
+                            <datalist id="endStation">
+                                <option v-for="station in stations" v-bind:value="station.crs_code">{{ station.name }}</option>
+                            </datalist>
+                        </div>
                     </div>
-        
-                    <div class="mb-3">
-                        <label for="departureTime" class="form-label">Departure time</label>
-                        <select v-model="form.departure_time" class="form-select" list="departureTime" name="departureTime">
-                            <option v-for="time in departure_times" v-bind:value="time">{{ time }}</option>
-                        </select>
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="departureTimeFrom" class="form-label">Departure time from</label>
+                            <select v-model="form.departure_time" class="form-select" list="departureTimeFrom" name="departureTimeFrom">
+                                <option v-for="time in departure_times" v-bind:value="time">{{ time.format("HH:mm") }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <label for="departureTimeTo" class="form-label">Departure time to</label>
+                            <select class="form-select" list="departureTimeTo" name="departureTimeTo" disabled>
+                                <option v-if="form.departure_time">{{ generateTime(form.departure_time).format("HH:mm") }}</option>
+                            </select>
+                        </div>
                     </div>
         
                     <div class="mb-3">
@@ -63,7 +74,7 @@
                         </svg>
 
                         <b>{{ data.meta.arrival_station }}</b>
-                        {{ data.meta.from_time.format("DD/MM/YYYY HH:mm") }}
+                        {{ data.meta.from_time.format("DD/MM/YYYY HH:mm") }} - {{ generateTime(data.meta.from_time).format("HH:mm") }}
                     </p>
 
                     <div class="alert alert-info" role="alert" v-if="requests.count > 0 && data.services.length == 0">No train services found</div>

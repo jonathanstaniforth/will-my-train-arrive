@@ -55,32 +55,7 @@ function resetError () {
 let app = new Vue({
     el: '#app',
     data: {
-        departure_times: [
-            "00:00",
-            "01:00",
-            "02:00",
-            "03:00",
-            "04:00",
-            "05:00",
-            "06:00",
-            "07:00",
-            "08:00",
-            "09:00",
-            "10:00",
-            "11:00",
-            "12:00",
-            "13:00",
-            "14:00",
-            "15:00",
-            "16:00",
-            "17:00",
-            "18:00",
-            "19:00",
-            "20:00",
-            "21:00",
-            "22:00",
-            "23:00"
-        ],
+        departure_times: [],
         error: {
             show: false,
             message: ""
@@ -101,7 +76,15 @@ let app = new Vue({
         },
         stations: STATIONS,
     },
+    created: function () {
+        for (let time = 0; time < 24; time++) {
+            this.departure_times.push(moment(time, "H"));
+        }
+    },
     methods: {
+        generateTime: function (time) {
+            return moment(time, "HHmm").add(1, "h");
+        },
         renderTime: function (time) {
             return moment(time, "HHmm").format("HH:mm");
         },
